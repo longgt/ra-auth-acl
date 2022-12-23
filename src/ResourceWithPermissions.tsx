@@ -1,5 +1,5 @@
 import React from 'react';
-import { Resource, WithPermissions, ResourceProps } from 'ra-core';
+import { Resource, ResourceProps } from 'ra-core';
 
 import { hasAccess } from './helpers';
 
@@ -7,15 +7,7 @@ interface Props extends ResourceProps {
     permissions: any;
 }
 
-export const ResourceWithPermissions = ({
-    permissions,
-    name,
-    list,
-    create,
-    edit,
-    show,
-    ...props
-}: Props) => {
+export const ResourceWithPermissions = ({ permissions, name, list, create, edit, show, ...props }: Props) => {
     const access = {
         enabled: hasAccess(permissions, `${name}.enabled`),
         list: hasAccess(permissions, `${name}.list`),
@@ -39,3 +31,27 @@ export const ResourceWithPermissions = ({
         />
     );
 };
+
+ResourceWithPermissions.raName = 'Resource';
+
+ResourceWithPermissions.registerResource = ({
+    create,
+    edit,
+    icon,
+    list,
+    name,
+    options,
+    show,
+    recordRepresentation,
+    permissions,
+}: Props) => ({
+    name,
+    options,
+    hasList: !!list,
+    hasCreate: !!create,
+    hasEdit: !!edit,
+    hasShow: !!show,
+    icon,
+    recordRepresentation,
+    permissions,
+});
